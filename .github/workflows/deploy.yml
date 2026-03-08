@@ -21,6 +21,8 @@ jobs:
       
       - name: Install, build, and upload your site
         uses: withastro/action@v2
+        with:
+          package-manager: bun
         # with:
           # path: . # 如果你的 astro 项目不在根目录，请修改这里
           # package-manager: pnpm # 如果你不用 npm/yarn，可以在这里指定
