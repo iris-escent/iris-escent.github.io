@@ -165,7 +165,7 @@ if ($result->num_rows > 0) {
 
 > 现在我们知道了，后端会拿我们的输入去丢给 dig 之类的命令行工具，但是由于配置了坏掉的 DNS，我们没有办法获得正常的查询结果。由于我们没有办法获得正常的查询结果，就排除了构造参数 URL 来获得信息的方法，猜测后端直接拼接了用户输入和指令，我们尝试注入，使用`;`隔断前一条命令。
 
-# 13
+### 13
 
 ------
 
@@ -479,5 +479,6 @@ for p in permutations("mnopq"):
 res = requests.get("http://127.0.0.1:59333", params=payload)
 print(res.url, res.text)
 ```
+
 
 得到`/find.php` 文件，打开，1发现flag文件，直接打开看不到flag,可能被注释导致无法渲染，用`php://filter/read=convert.base64-encode/resource=flag.php` 伪协议编码过滤，然后得到flag。
