@@ -1,6 +1,6 @@
 ---
 title: "moectf web 复现"
-description: ""
+# description: ""
 publishDate: "2026-03-09"  
 tags: ["ctf"] 
 draft: false 
@@ -482,3 +482,4 @@ print(res.url, res.text)
 
 
 得到`/find.php` 文件，打开，1发现flag文件，直接打开看不到flag,可能被注释导致无法渲染，用`php://filter/read=convert.base64-encode/resource=flag.php` 伪协议编码过滤，然后得到flag。
+
