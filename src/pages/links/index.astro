@@ -1,47 +1,78 @@
 ---
 import links from 'public/links.json'
 
-import { Collapse, Timeline } from 'astro-pure/user'
-import config from 'virtual:config'
 import PageLayout from '@/layouts/CommonPage.astro'
 import FriendList from '@/components/links/FriendList.astro'
 
-const headings = [
-  { depth: 2, slug: 'common-links', text: 'Common Links' },
-  // { depth: 2, slug: 'apply-links', text: 'Apply Links' }
-]
-
 const { friends } = links
-// const linksConf = config.integ.links
-// const linkEditPage = 'https://github.com/iris-escent/iris-escent.github.io/blob/main/public/links.json'
 ---
 
-<PageLayout title='Links' {headings} comment>
+<PageLayout title='Links'>
   <p>They're sorted randomly.</p>
-  <!-- <h2 id='common-links'>Common Links</h2> -->
   <FriendList list={friends[0]} />
 
-  {/*
-  <h2 id='apply-links'>Apply Links</h2>
-  <p>本站信息（点击复制）The site information (click to copy)：</p>
-  <blockquote class='not-prose grid grid-cols-[auto_1fr] gap-x-2 break-words border-s-4 ps-4'>
-    {
-      linksConf.applyTip.map(({ name, val }) => {
-        const script = `navigator.clipboard.writeText('${val}');document.dispatchEvent(new CustomEvent('toast',{detail:{message:'Copied "${val}" to clipboard!'}}))`
-        return (
-          <>
-            <span class='text-end'>{name}:</span>
-            <samp class='cursor-pointer' onclick={script}>
-              {val}
-            </samp>
-          </>
-        )
-      })
-    }
-  </blockquote>
-
+  <h2>申请友链 / Apply for Friend Link</h2>
   <p>
-    可通过下方留言或 <a href={linkEditPage} target='_blank'>提交 PR</a> 申请友链。
+    请填写以下信息并发送邮件至我的邮箱，我会尽快处理。<br />
+    Please fill in the following fields and send an email to apply for a friend link.
   </p>
-*/}
+  <form id='friend-link-form' class='not-prose flex flex-col gap-3 mt-4'>
+    <label class='flex flex-col gap-1'>
+      <span class='text-sm font-medium'>Site Title *</span>
+      <input
+        id='fl-title'
+        type='text'
+        placeholder='Your site title'
+        required
+        class='rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50'
+      />
+    </label>
+    <label class='flex flex-col gap-1'>
+      <span class='text-sm font-medium'>URL *</span>
+      <input
+        id='fl-url'
+        type='url'
+        placeholder='https://your-site.com'
+        required
+        class='rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50'
+      />
+    </label>
+    <label class='flex flex-col gap-1'>
+      <span class='text-sm font-medium'>Description *</span>
+      <textarea
+        id='fl-desc'
+        placeholder='A short description of your site'
+        rows='3'
+        required
+        class='rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50 resize-none'
+      ></textarea>
+    </label>
+    <button
+      type='submit'
+      class='not-prose self-start rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity'
+    >
+      Submit via Email
+    </button>
+  </form>
 </PageLayout>
+
+<script>
+  const form = document.getElementById('friend-link-form')
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const title = (document.getElementById('fl-title') as HTMLInputElement | null)?.value.trim() ?? ''
+    const url = (document.getElementById('fl-url') as HTMLInputElement | null)?.value.trim() ?? ''
+    const desc = (document.getElementById('fl-desc') as HTMLTextAreaElement | null)?.value.trim() ?? ''
+    if (!title || !url || !desc) return
+    // Basic URL validation
+    try {
+      new URL(url)
+    } catch {
+      alert('Please enter a valid URL (e.g. https://your-site.com)')
+      return
+    }
+    const MAX = 500
+    const body = `Site Title: ${title.slice(0, MAX)}\nURL: ${url.slice(0, MAX)}\nDescription: ${desc.slice(0, MAX)}`
+    window.location.href = `mailto:604854259@qq.com?subject=${encodeURIComponent('Friend Link Application')}&body=${encodeURIComponent(body)}`
+  })
+</script>
