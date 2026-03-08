@@ -1,0 +1,83 @@
+/* Theme */
+:root { 
+  --background: 210 33% 99%;
+  --foreground: 240 5% 1%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  /* 高亮颜色 */
+  --primary: 98 42% 44%;
+  --primary-foreground: 0 0% 92.5%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95%;
+  /* 正文颜色 */
+  --muted-foreground: 240 5% 10%; 
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 72.22% 50.59%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+  /* 三级标题颜色 - 浅色模式 */
+  --h3-color: 106 83% 28%; /* #227E0E */
+}
+.dark {
+  --background: 240 20.54% 5.2%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 98 42% 44%;
+  --primary-foreground: 240 3.7% 15.9%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 5.9% 12%;
+  --muted-foreground: 240 5% 74.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 19.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
+  /* 三级标题颜色 - 深色模式 */
+  --h3-color: 90 85% 40%; /* #79B519 */
+}
+
+
+:root {
+  --un-default-border-color: hsl(var(--border) / 1);
+  /* 网格背景变量 */
+  --grid-color: hsl(var(--border) / 0.3);
+  --grid-size: 24px;
+  --grid-width: 1px;
+}
+
+/* 深色模式网格颜色 */
+.dark {
+  --grid-color: hsl(var(--border) / 0.2);
+}
+
+/* 网格背景样式 */
+body {
+  background-image: 
+    linear-gradient(var(--grid-color) var(--grid-width), transparent var(--grid-width)),
+    linear-gradient(90deg, var(--grid-color) var(--grid-width), transparent var(--grid-width));
+  background-size: var(--grid-size) var(--grid-size);
+}
+html.dark {
+  color-scheme: dark;
+}
+
+/* Global */
+a {
+  transition: color 0.2s ease;
+  &:hover {
+    color: hsl(var(--primary) / var(--un-text-opacity, 1));
+  }
+}
