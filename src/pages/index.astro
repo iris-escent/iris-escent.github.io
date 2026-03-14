@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets'
 
 import { Quote } from 'astro-pure/advanced'
-import { PostPreview } from 'astro-pure/components/pages'
+import { PostPreview } from 'astro-pure/components/pages/PostPreview.astro'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button, Card, Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
@@ -62,7 +62,7 @@ if (!images[imagePath])
           <Section title='Posts'>
             <a>
               {allPostsByDate.map((p) => (
-                <PostPreview post={p} />
+                <PostPreview post={p} simple />
               ))}
             </a>
             <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
