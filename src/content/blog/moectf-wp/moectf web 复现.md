@@ -1,6 +1,6 @@
 ---
 title: "moectf web 复现"
-description: " 🍂第1篇复现🍂 "
+description: "  "
 publishDate: "2026-03-09"  
 tags: ["ctf"] 
 draft: false 
