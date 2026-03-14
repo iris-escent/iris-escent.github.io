@@ -5,16 +5,16 @@ import type { HTMLTag, Polymorphic } from 'astro/types'
 
 import { cn } from 'astro-pure/utils'
 import { Button, FormattedDate, Icon } from 'astro-pure/user'
-// 根据报错信息，原路径找不到模块，推测可能需要调整路径
-import { processTags } from '@/utils/formatTag'
+import { processTags, formatTag } from '@/utils/formatTag'
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
   post: CollectionEntry<CollectionKey>
   detailed?: boolean
+  simple?: boolean
   class?: string
 }
 
-const { as: Tag = 'div', post, detailed = false, class: className } = Astro.props
+const { as: Tag = 'div', post, detailed = false, simple = false, class: className } = Astro.props
 
 const { id, data } = post
 
@@ -25,9 +25,10 @@ const postDate = data.updated ?? data.publishDate
 <li
   class={cn(
     'post-preview group/card flex flex-col relative rounded-2xl border bg-background transition-colors ease-in-out px-5 py-2.5 hover:bg-muted',
-    detailed && 'max-sm:px-4 sm:py-5',
+    detailed || simple && 'max-sm:px-4 sm:py-5',
     className
   )}
+
   style={detailed &&
     data.heroImage?.color &&
     `--preview-highlight:color-mix(in srgb,${data.heroImage.color} 40%,hsl(var(--foreground)/var(--un-text-opacity,1)));
@@ -36,7 +37,7 @@ const postDate = data.updated ?? data.publishDate
   <a
     class={cn(
       'group/link w-full flex flex-col transition-all hover:text-primary',
-      !detailed && 'sm:flex-row',
+      !detailed || simple && 'sm:flex-row',
       detailed && data.heroImage && 'max-md:pt-24'
     )}
     href={`/blog/${id}`}
@@ -53,77 +54,172 @@ const postDate = data.updated ?? data.publishDate
       )
     }
 
-    <FormattedDate class='min-w-[95px] py-1 text-xs' date={postDate} />
 
     <Tag class='z-10 flex-grow'>
-      {/* title */}
-      <div class='flex justify-between'>
-        <div class={detailed && 'font-medium'}>
-          {data.draft && <span class='text-red-500'>(Draft) </span>}
-          {data.title}
+
+      {/* Simple style metadata */}
+      {simple && (
+        <div class='flex items-center gap-2 py-1 text-xs mb-1 text-muted-foreground'>
+
+          <FormattedDate date={postDate} />
+          
+          {/* reading time */}
+          <span class='flex items-center gap-1'>
+            <Icon name='time' class='size-4' />
+            {remarkPluginFrontmatter.minutesRead}
+          </span>
+
+          {/* language */}
+          {data.language && (
+            <span class='flex items-center gap-1'>
+              <Icon name='earth' class='size-4' />
+              {data.language}
+            </span>
+          )}
         </div>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          width='16'
-          height='16'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke-width='2.5'
-          stroke-linecap='round'
-          stroke-linejoin='round'
-          class='preview-redirect my-1 stroke-muted-foreground group-hover/link:stroke-primary'
-          ><line
-            x1='5'
-            y1='12'
-            x2='19'
-            y2='12'
-            class='translate-x-4 scale-x-0 transition-all duration-300 ease-in-out group-hover/link:translate-x-1 group-hover/link:scale-x-100'
-          ></line><polyline
-            points='12 5 19 12 12 19'
-            class='translate-x-0 transition-all duration-300 ease-in-out group-hover/link:translate-x-1'
-          ></polyline></svg
-        >
-      </div>
-      {
-        detailed && (
+      )}
+
+      {/* Detailed style metadata */}
+      {detailed && (
+        <div class='flex items-center gap-2 py-1 text-xs mb-1 text-muted-foreground'>
+          <FormattedDate date={postDate} />
+          
+          {/* reading time */}
+          <span class='flex items-center gap-1 text-xs'>
+            <Icon name='time' class='size-4' />
+            {remarkPluginFrontmatter.minutesRead}
+          </span>
+
+          {/* language */}
+          {data.language && (
+            <span class='flex items-center gap-1'>
+              <Icon name='earth' class='size-4' />
+              {data.language}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Default style - show date and title as separate modules */}
+      {!detailed && !simple && (
+        <div class='flex items-center justify-between gap-4 w-full'>
+          {/* Date and title container with responsive layout */}
+          <div class='flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 flex-grow'>
+            {/* Date module with fixed size and separate color */}
+            <div class='flex-shrink-0 w-25 text-left text-primary'>
+              <FormattedDate date={postDate} dateTimeOptions={{ month: '2-digit', day: '2-digit' }} />
+            </div>
+            
+            {/* Title module */}
+            <div class='flex-grow text-base'>
+              {data.draft && <span class='text-red-500'>(Draft) </span>}
+              <strong>{data.title}</strong>
+            </div>
+          </div>
+          
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke-width='2.5'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            class='preview-redirect my-1 stroke-muted-foreground group-hover/link:stroke-primary'
+          >
+            <line
+              x1='5'
+              y1='12'
+              x2='19'
+              y2='12'
+              class='translate-x-4 scale-x-0 transition-all duration-300 ease-in-out group-hover/link:translate-x-1 group-hover/link:scale-x-100'
+            ></line>
+            <polyline
+              points='12 5 19 12 12 19'
+              class='translate-x-0 transition-all duration-300 ease-in-out group-hover/link:translate-x-1'
+            ></polyline>
+          </svg>
+        </div>
+      )}
+
+      {/* title for simple/detailed styles */}
+      {(detailed || simple) && (
+        <div class='flex justify-between mb-1'>
+          <div class={detailed || simple && 'text-lg'}>
+            {data.draft && <span class='text-red-500'>(Draft) </span>}
+            <strong>{data.title}</strong>
+          </div>
+          <br>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke-width='2.5'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            class='preview-redirect my-1 stroke-muted-foreground group-hover/link:stroke-primary'
+          >
+            <line
+              x1='5'
+              y1='12'
+              x2='19'
+              y2='12'
+              class='translate-x-4 scale-x-0 transition-all duration-300 ease-in-out group-hover/link:translate-x-1 group-hover/link:scale-x-100'
+            ></line>
+            <polyline
+              points='12 5 19 12 12 19'
+              class='translate-x-0 transition-all duration-300 ease-in-out group-hover/link:translate-x-1'
+            ></polyline>
+          </svg>
+        </div>
+      )}
+
+      {simple && (
+        <>
+          {/* desc */}
+          {data.description && (
+            <p
+              class={cn(
+                'line-clamp-2 pt-1 text-base mb-1 text-muted-foreground sm:line-clamp-3'
+              )}
+            >
+              {data.description}
+            </p>
+          )}
+        </>
+      )}
+
+      {detailed && (
+
           <>
             {/* desc */}
             <p
               class={cn(
-                'line-clamp-2 pt-1 text-sm text-muted-foreground sm:line-clamp-3',
+                'line-clamp-2 leading-relaxed pt-1 text-base mb-2 text-muted-foreground sm:line-clamp-3',
                 data.heroImage && 'sm:me-24'
               )}
             >
               {data.description}
             </p>
-            <div class='flex items-center gap-2 py-1.5 text-sm italic leading-4 text-muted-foreground sm:py-3'>
-              {/* reading time */}
-              <span class='flex items-center gap-1'>
-                <Icon name='time' class='size-4' />
-                {remarkPluginFrontmatter.minutesRead}
-              </span>
-              {/* language */}
-              {data.language && (
-                <span class='flex items-center gap-1'>
-                  <Icon name='earth' class='size-4' />
-                  {data.language}
-                </span>
-              )}
-            </div>
+
           </>
         )
       }
     </Tag>
   </a>
+
   {/* tags */}
   {
     detailed && data.tags && (
       <ul class='tag-list mt-1 flex flex-wrap gap-2'>
         {processTags(data.tags).map((tag: string) => (
-          <li>
-            <Button title={tag} href={`/tags/${tag}`} style='pill' />
-          </li>
-        ))}
+        <li>
+          <Button title={tag} href={`/tags/${formatTag(tag)}`} style='pill'>{formatTag(tag)}</Button>
+        </li>
+      ))}
       </ul>
     )
   }
