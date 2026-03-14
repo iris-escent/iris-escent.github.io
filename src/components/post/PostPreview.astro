@@ -23,8 +23,9 @@ const postDate = data.updated ?? data.publishDate
 ---
 
 <li
+  
   class={cn(
-    'post-preview group/card flex flex-col relative rounded-2xl border bg-background transition-colors ease-in-out px-5 py-2.5 hover:bg-muted',
+    'post-preview group/card flex flex-col relative rounded-2xl border bg-background/60 backdrop-blur-md transition-colors ease-in-out px-5 py-2.5 hover:bg-muted',
     detailed || simple && 'max-sm:px-4 sm:py-5',
     className
   )}
