@@ -45,63 +45,36 @@ if (!images[imagePath])
         <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
           <p class='text-muted-foreground font-bold text-lg'>🍂 Welcome, my friends!</p>
         </div>
-        {/* 
-          <Label title='China'>
-            <Icon name='location' class='size-5' slot='icon' />
-          </Label>
-          <Label
-            title='Contact'
-            as='a'
-            href='https://github.com/samantha050313'
-            target='_blank'
-          >
-            <Icon name='github' class='size-5' slot='icon' />
-          </Label>
-        */}
       </div>
-
-      {/* Get template */}
-      {/* <a
-        href='/about'
-        target='_blank'
-        class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
-      >
-        <span class='relative flex items-center justify-center'>
-          <span
-            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-          ></span>
-          <span class='size-2 rounded-full bg-green-400'></span>
-        </span>
-        <p class='font-medium text-muted-foreground'>More About Me</p>
-      </a> */}
     </section>
 
+    <br>  
+
+    {/* 主页内容 */}
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
-       <!-- <Section title='About'> -->
-        <!-- <p class='text-muted-foreground font-bold'>🍂 Welcome,my friends!</p> -->
-        {/*  <p class='text-muted-foreground' style="line-height: 1.8;"> 
-         <br/>
-        </p> */}
-        
-        <!-- <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />  -->
+      {/* About 关于我*/}
+      <Section title='About'>
+        <p class='text-muted-foreground font-bold' style="line-height: 1.8;">
+          🍂 Welcome to the gateway of a new world! 🍂
+        </p>
       </Section>
+
+      {/* Posts 我的博客列表 */}
       {
         allPostsByDate.length > 0 && (
           <Section title='Posts'>
-            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+            <a>
               {allPostsByDate.map((p) => (
-                <li class='flex flex-col gap-x-2 sm:flex-row'>
-                  <PostPreview post={p} />
-                </li>
+                <PostPreview post={p} simple />
               ))}
-            </ul>
+            </a>
             <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
           </Section>
         )
       }
 
-      
     </div>
+
     <Quote class='mt-12' />
   </main>
 </PageLayout>
