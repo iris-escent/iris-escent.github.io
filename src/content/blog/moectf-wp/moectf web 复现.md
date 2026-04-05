@@ -1,7 +1,6 @@
 ---
 title: "moectf web 复现"
 publishDate: "2026-03-09"  
-description: ""
 tags: ["ctf"] 
 draft: false 
 ---
