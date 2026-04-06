@@ -11,7 +11,7 @@ draft: false
 ###  level 1
 
 1.输入框，随便输入测试页面对用户输入的处理
-![image-20260406141904653](C:\Users\PC\AppData\Roaming\Typora\typora-user-images\image-20260406141904653.png)
+![image-20260406141904653](./photos/image-20260406141904653.png)
 
  2.发现 完全没有任何处理和转义，页面直接输出我们的代码--即反射型xss
 
@@ -28,7 +28,7 @@ draft: false
 ###  level2
 
 1.留言/输入显示出来，需要html里的innerHTML属性，`innerHTML` 会禁止`<script>` 标签的被执行，因此没办法直接使用
-![image-20260406142501829](C:\Users\PC\AppData\Roaming\Typora\typora-user-images\image-20260406142501829.png)
+![image-20260406142501829](./photos/image-20260406142501829.png)
 
 2.看输入对应的源码
 
@@ -177,7 +177,7 @@ https://……/frame#data:text/javascript,alert(1)
 3.`url=https://example.com#example `下`location.hash` 
  返回#example，所以常和.substr(1)配合使用截除#，保留后面的部分。
 
-![image-20260406151808952](C:\Users\PC\AppData\Roaming\Typora\typora-user-images\image-20260406151808952.png)
+![image-20260406151808952](./photos/image-20260406151808952.png)
 
  通关！
 
