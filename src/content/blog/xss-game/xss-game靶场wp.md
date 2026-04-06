@@ -1,4 +1,12 @@
- 靶场：[XSS game](https://xss-game.appspot.com/)
+---
+title: "XSS-GAME wp"
+publishDate: "2026-04-06"  
+tags: ["ctf"] 
+draft: false 
+---
+
+
+靶场：[XSS game](https://xss-game.appspot.com/)
 
 ###  level 1
 
