@@ -5,10 +5,9 @@ tags: ["ctf"]
 draft: false 
 ---
 
-
 靶场：[XSS game](https://xss-game.appspot.com/)
 
-###  level 1
+### level 1
 
 1.输入框，随便输入测试页面对用户输入的处理
 ![image-20260406141904653](C:\Users\PC\AppData\Roaming\Typora\typora-user-images\image-20260406141904653.png)
@@ -22,10 +21,11 @@ draft: false
 ```
 
 补充笔记：
- 1.反射型 XSS(Reflected XSS)：直接拼接”进最终生成的网页结构（HTML）里返回给浏览器。用户输入什么，页面直接输出什么。
- 2.alert()：javascript里能弹出弹窗的指令，html中用`<script>`用来包裹js代码 ，执行。
 
-###  level2
+1. 反射型 XSS(Reflected XSS)：直接拼接”进最终生成的网页结构（HTML）里返回给浏览器。用户输入什么，页面直接输出什么。
+2.  alert()：javascript里能弹出弹窗的指令，html中用`<script>`用来包裹js代码 ，执行。
+
+### level2
 
 1.留言/输入显示出来，需要html里的innerHTML属性，`innerHTML` 会禁止`<script>` 标签的被执行，因此没办法直接使用
 ![image-20260406142501829](C:\Users\PC\AppData\Roaming\Typora\typora-user-images\image-20260406142501829.png)
@@ -36,13 +36,13 @@ draft: false
 function displayPosts() {
         var containerEl = document.getElementById("post-container");
         containerEl.innerHTML = "";
- 
+
         var posts = DB.getPosts();
         for (var i=0; i<posts.length; i++) {
           var html = '<table class="message"> <tr> <td valign=top> '
             + '<img src="/static/level2_icon.png"> </td> <td valign=top '
             + ' class="message-container"> <div class="shim"></div>';
- 
+
           html += '<b>You</b>';
           html += '<span class="date">' + new Date(posts[i].date) + '</span>';
           html += "<blockquote>" + posts[i].message + "</blockquote";
@@ -74,7 +74,7 @@ function chooseTab(num) {
         var html = "Image " + parseInt(num) + "<br>";
         html += "<img src='/static/level3/cloud" + num + ".jpg' />";
         $('#tabContent').html(html);
- 
+
         window.location.hash = num;
 ```
 
@@ -92,9 +92,9 @@ payload:
 
 找到注入点`timer` ,
 
- ```html
- <img src="/static/loading.gif" onload="startTimer('{{ timer }}');" />
- ```
+```html
+<img src="/static/loading.gif" onload="startTimer('{{ timer }}');" />
+```
 
 payload:
 
@@ -106,7 +106,7 @@ payload:
 
 补充笔记：
 
-onload属性会被当作js代码执行。
+1. onload属性会被当作js代码执行。
 
 ### level 5
 
@@ -117,7 +117,7 @@ onload属性会被当作js代码执行。
     <img src="/static/logos/level5.png" /><br><br>
     <!-- We're ignoring the email, but the poor user will never know! -->
     Enter email: <input id="reader-email" name="email" value="">
- 
+
     <br><br>
     <a href="{{ next }}">Next >></a>
   </body>
@@ -170,12 +170,13 @@ https://……/frame#data:text/javascript,alert(1)
 ```
 
 补充笔记：
-1.html里，src是文件路径
 
-2.`if (url.match(/^https?:\/\//)) ` 正则表达式，看`^https?://`，^从第一个字符开始，？前的字符出现次数无规定0-fff,\ / 是/。
+1. html里，src是文件路径
 
-3.`url=https://example.com#example `下`location.hash` 
- 返回#example，所以常和.substr(1)配合使用截除#，保留后面的部分。
+2. `if (url.match(/^https?:\/\//)) ` 正则表达式，看`^https?://`，^从第一个字符开始，？前的字符出现次数无规定0-fff,\ / 是/。
+
+3. `url=https://example.com#example `下`location.hash` 
+    返回#example，所以常和.substr(1)配合使用截除#，保留后面的部分。
 
 ![image-20260406151808952](C:\Users\PC\AppData\Roaming\Typora\typora-user-images\image-20260406151808952.png)
 
