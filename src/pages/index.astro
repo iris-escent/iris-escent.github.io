@@ -62,7 +62,7 @@ if (!images[imagePath])
           <Section title='Posts'>
             <a>
               {allPostsByDate.map((p) => (
-                <PostPreview post={p} simple />
+                <PostPreview post={p} />
               ))}
             </a>
             <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
